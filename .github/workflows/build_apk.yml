@@ -26,16 +26,23 @@ jobs:
         run: |
           keytool -genkey -v -keystore /home/runner/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
 
-      - name: Configure ETC2/ASTC & Keystores in Project Files
+      - name: Configure Project Settings (Portrait Lock & ETC2/ASTC)
         run: |
-          # 1. Enable ETC2/ASTC mobile texture compression in project.godot
+          # 1. Force Portrait Orientation & Canvas Scaling in project.godot
+          if grep -q "\[display\]" project.godot; then
+            sed -i '/\[display\]/a window/handheld/orientation=1\nwindow/stretch/mode="canvas_items"\nwindow/stretch/aspect="expand"' project.godot
+          else
+            printf "\n[display]\nwindow/size/viewport_width=720\nwindow/size/viewport_height=1280\nwindow/handheld/orientation=1\nwindow/stretch/mode=\"canvas_items\"\nwindow/stretch/aspect=\"expand\"\n" >> project.godot
+          fi
+
+          # 2. Enable ETC2/ASTC mobile texture compression
           if grep -q "\[rendering\]" project.godot; then
             sed -i '/\[rendering\]/a textures/vram_compression/import_etc2_astc=true' project.godot
           else
             printf "\n[rendering]\ntextures/vram_compression/import_etc2_astc=true\n" >> project.godot
           fi
 
-          # 2. Inject debug keystore into export_presets.cfg
+          # 3. Inject debug keystore into export_presets.cfg
           sed -i 's|keystore/debug=""|keystore/debug="/home/runner/debug.keystore"|g' export_presets.cfg || true
           sed -i 's|keystore/debug_user=""|keystore/debug_user="androiddebugkey"|g' export_presets.cfg || true
           sed -i 's|keystore/debug_password=""|keystore/debug_password="android"|g' export_presets.cfg || true
