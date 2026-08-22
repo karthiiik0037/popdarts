@@ -26,8 +26,16 @@ jobs:
         run: |
           keytool -genkey -v -keystore /home/runner/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
 
-      - name: Inject Keystore into export_presets.cfg
+      - name: Configure ETC2/ASTC & Keystores in Project Files
         run: |
+          # 1. Enable ETC2/ASTC mobile texture compression in project.godot
+          if grep -q "\[rendering\]" project.godot; then
+            sed -i '/\[rendering\]/a textures/vram_compression/import_etc2_astc=true' project.godot
+          else
+            printf "\n[rendering]\ntextures/vram_compression/import_etc2_astc=true\n" >> project.godot
+          fi
+
+          # 2. Inject debug keystore into export_presets.cfg
           sed -i 's|keystore/debug=""|keystore/debug="/home/runner/debug.keystore"|g' export_presets.cfg || true
           sed -i 's|keystore/debug_user=""|keystore/debug_user="androiddebugkey"|g' export_presets.cfg || true
           sed -i 's|keystore/debug_password=""|keystore/debug_password="android"|g' export_presets.cfg || true
