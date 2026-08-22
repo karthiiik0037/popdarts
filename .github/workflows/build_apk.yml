@@ -26,7 +26,13 @@ jobs:
         run: |
           keytool -genkey -v -keystore /home/runner/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
 
-      - name: Configure Godot Android Settings
+      - name: Inject Keystore into export_presets.cfg
+        run: |
+          sed -i 's|keystore/debug=""|keystore/debug="/home/runner/debug.keystore"|g' export_presets.cfg || true
+          sed -i 's|keystore/debug_user=""|keystore/debug_user="androiddebugkey"|g' export_presets.cfg || true
+          sed -i 's|keystore/debug_password=""|keystore/debug_password="android"|g' export_presets.cfg || true
+
+      - name: Configure Godot Editor Settings
         run: |
           mkdir -p ~/.config/godot
           cat <<EOF > ~/.config/godot/editor_settings-4.tres
@@ -40,11 +46,11 @@ jobs:
           export/android/java_sdk_path = "$JAVA_HOME"
           EOF
 
-      - name: Export Godot 4 Android APK
+      - name: Export Godot 4.7.2 Android APK
         uses: firebelley/godot-export@v5.2.1
         with:
-          godot_executable_download_url: https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip
-          godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz
+          godot_executable_download_url: https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz
           relative_project_path: ./
           archive_output: false
           use_preset_export_path: false
