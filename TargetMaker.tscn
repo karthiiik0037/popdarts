@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bb6ysa1u67wo7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wih8e"]
+radius = 20.0
+
+[node name="TargetMaker" type="Area2D" unique_id=182177080]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1319913639]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_wih8e")

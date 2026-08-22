@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://b5gu5dceuibnm"]
+
+[ext_resource type="PackedScene" uid="uid://bb6ysa1u67wo7" path="res://TargetMaker.tscn" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://dhg6d7tmwj6r2" path="res://main.gd" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://benva3gwb46tj" path="res://TargetMaker.gd" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://bwgkh301scxbl" path="res://hud.tscn" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://sd5lrm0sfuh6" path="res://Tower.gd" id="5_lquwl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eiols"]
+size = Vector2(20, 1140)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wih8e"]
+size = Vector2(20, 1140)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lymug"]
+size = Vector2(620, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nturo"]
+size = Vector2(620, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wih8e"]
+radius = 16.0
+
+[node name="Main" type="Node2D" unique_id=516661051]
+script = ExtResource("1_1bvp3")
+
+[node name="TableSurface" type="ColorRect" parent="." unique_id=961339987]
+offset_left = 29.0
+offset_top = 37.0
+offset_right = 660.0
+offset_bottom = 1200.0
+mouse_filter = 2
+color = Color(0.27387273, 0.27387273, 0.27387273, 1)
+
+[node name="TargetMaker" parent="." unique_id=182177080 instance=ExtResource("1_0xm2m")]
+position = Vector2(360, 300)
+script = ExtResource("2_1bvp3")
+
+[node name="HUD" parent="." unique_id=96156151 instance=ExtResource("3_h2yge")]
+
+[node name="TableBounds" type="StaticBody2D" parent="." unique_id=2023753253]
+
+[node name="LeftWall" type="CollisionShape2D" parent="TableBounds" unique_id=95682888]
+position = Vector2(50, 640)
+shape = SubResource("RectangleShape2D_eiols")
+
+[node name="RightWall" type="CollisionShape2D" parent="TableBounds" unique_id=1564823265]
+position = Vector2(670, 640)
+shape = SubResource("RectangleShape2D_wih8e")
+
+[node name="TopWall" type="CollisionShape2D" parent="TableBounds" unique_id=611239338]
+position = Vector2(360, 70)
+shape = SubResource("RectangleShape2D_lymug")
+
+[node name="BottomWall" type="CollisionShape2D" parent="TableBounds" unique_id=94289764]
+position = Vector2(360, 1210)
+shape = SubResource("RectangleShape2D_nturo")
+
+[node name="Tower" type="Area2D" parent="." unique_id=1654594536]
+script = ExtResource("5_lquwl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tower" unique_id=415153828]
+position = Vector2(160, 120)
+shape = SubResource("CircleShape2D_wih8e")

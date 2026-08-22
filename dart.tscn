@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bsnmonmmyw6v6"]
+
+[ext_resource type="Script" uid="uid://dhqd4kpfulleg" path="res://Dart.gd" id="1_oncxt"]
+
+[node name="Dart" type="Node2D" unique_id=1466788698]
+script = ExtResource("1_oncxt")
