@@ -25,6 +25,9 @@ ProfileManager="*uid://j3bjci27iq0a"
 
 window/size/viewport_width=720
 window/size/viewport_height=1280
+window/size/mode=0
+window/size/resizable=true
+window/handheld/orientation=1
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
